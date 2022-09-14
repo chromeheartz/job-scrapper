@@ -1,10 +1,10 @@
 from requests import get
 
-websites = ("https://google.com", "airbnb.com", "https://twitter.com",
-            "facebook.com")
+base_url = "https://weworkremotely.com/remote-jobs/search?term="
+search_term = "react"
 
-for website in websites:
-    if not website.startswith("https://"):
-        website = f"https://{website}"
-    response = get(website)
-    print(response)
+response = get(f"{base_url}{search_term}")
+if response.status_code != 200:
+  print("cant't request website")
+else:
+  print(response.text)
