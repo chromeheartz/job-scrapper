@@ -17,6 +17,15 @@ else:
   soup = BeautifulSoup(response.text, "html.parser")
   # class=""이 아닌 class_="" 가 중요하다
   print(soup.find_all('section', class_="jobs")) 
+  # built-in function len은 list나 tuple의 크기를 준다
+  # print(len(jobs))
+  for job in jobs:
+      job_posts = job.find_all('li')
+      #pop은 list에서 한 항목을 제거. -1로 마지막 제거
+      job_posts.pop(-1)
+      for post in job_posts:
+          print(post)
+          print("/////////////////")
 
 """
   class_="jobs"는 keyword argument라고 한다
