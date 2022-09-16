@@ -17,3 +17,13 @@ else:
   soup = BeautifulSoup(response.text, "html.parser")
   # class=""이 아닌 class_="" 가 중요하다
   print(soup.find_all('section', class_="jobs")) 
+
+"""
+  class_="jobs"는 keyword argument라고 한다
+  우리한테 익숙한것은 positional argument이다.
+
+  positional argument은 위치에 따라 무엇이 올지 아는것
+  keyword argument는 자리에 더이상 신경쓰지않을때 중요해진다
+  자리에 신경안쓰는대신 argument이름에 신경을쓰는것
+  변수명="넘겨줄인자" 이런식으로 써줌. 순서는 신경안써도괜찮음
+"""
