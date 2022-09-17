@@ -13,6 +13,8 @@ response = get(f"{base_url}{search_term}")
 if response.status_code != 200:
   print("cant't request website")
 else:
+  # 빈 배열을 만들어 결과물들을 넣어줄것
+  results = []
   # beautifulsoup한테 html을 보내준다고말함
   soup = BeautifulSoup(response.text, "html.parser")
   # class=""이 아닌 class_="" 가 중요하다
@@ -30,9 +32,19 @@ else:
             link = anchor['href']
             company, kind, region = anchor.find_all('span', class_="company")
             # print(company)
-            title = anchor.find('span', class_="title")
-            print(company,"\n", title)
-            print("///////////////////////////////////////")
+            title = anchor.find('span', class_="title")            
+            job_data = {
+              # 태그안에 있는 문자열 출력
+              'company' : company.string,
+              'region' : region.string,
+              'position' : title.string
+            }
+            # loop가 한번 돌아 job을 추출할때마다 그것들을 for loop의 밖에서 저장해낼것이다
+            results.append(job_data)
+
+  for result in results:
+  print(result)
+  print("//////////////")
           
 
 """
