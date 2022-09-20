@@ -1,20 +1,72 @@
-from requests import get
+"""
+    사용한 라이브러리
+    requsets
+    python코드에서 웹사이트로 request를 보낼수있게 해준다
+    get 은 function인데 이동한 다음에 website를 가져오는것
+
+    beautifulSoup
+    find_all같은 document에서 HTML태그를 찾게 해준다
+    html을 첫번째 argument로 전해주고 html.parser라는 문자열을 전달해줌
+    이것은 내가 beautifulSoup한테 html을 보내준다고 말하는것
+
+    selenium
+    selenium은 브라우저를 자동화 할수있는 프로그램
+    webdriver는 파이썬에서 브라우저를 시작할 수 있는 방법
+"""
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
-# extractors라는 폴더의 wwr 에서 extract_wwr_jobs를 import하라고함
-from extractors.wwr import extract_wwr_jobs
 
-base_url = "https://kr.indeed.com/jobs?q="
-search_term = "react"
+#options의 instance라는것을 알려줌
+options = Options()
+# replit에서 동작시키기위함
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-dev-shm-usage")
 
-response = get(f"{base_url}{search_term}")
+browser = webdriver.Chrome(options=options)
 
-if response.status_code != 200:
-  print("can't request page")
-else:
-  soup = BeautifulSoup(response.text, "html_parse")
-  job_list = soup.find("ul", class_="jobsearch-ResultsList")
-  # 바로 밑에있는 li만 찾아주기위해 recursive를 False로 지정
-  jobs = job_list.find_all('li', recursive=False)
-  for job in jobs:
-    print(job)
-    print("//////////")
+def get_page_count(keyword):
+    base_url = "https://kr.indeed.com/jobs?q="
+    browser.get(f"{base_url}{keyword}")
+
+    soup = BeautifulSoup(browser.page_source, 'html.parser')
+    if pagination == None:
+      return 1
+    pagination = soup.find("div", class_="pagination-list")
+    pages = pagination.find_all("li", recursive=False)
+    print(len(pages))
+
+
+get_page_count("python")
+
+
+def extract_indeed_jobs(keyword):
+
+    browser.get(f"https://kr.indeed.com/jobs?q={keyword}&limit=50")
+
+    soup = BeautifulSoup(browser.page_source, 'html.parser')
+    job_list = soup.find("ul", class_="jobsearch-ResultsList")
+    jobs = job_list.find_all("li", recursive=False)
+    for job in jobs:
+        zone = job.find("div", class_="mosaic-zone")
+        if zone == None:
+            results = []
+            # h2를 찾고 a를 찾는 대신 select로 selector를 이용해찾음
+            # beautifulSoup은 HTML태그들을 데이터구조로 가져온다 list,dictionary
+            anchor = job.select_one(".jobTitle a")
+            title = anchor['aria-label']
+            link = anchor['href']
+            # 정보와 위치 찾기
+            company = job.find("span", class_="companyName")
+            location = job.find("div", class_="companyLocation")
+            # 데이터 추출위해 정리
+            job_data = {
+                'link': f"https://kr.indeed.com{link}",
+                'company': company.string,
+                'location ': location.string,
+                'position': title
+            }
+            results.append(job_data)
+
+    for result in results:
+        print(result)
