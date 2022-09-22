@@ -13,3 +13,18 @@
     selenium은 브라우저를 자동화 할수있는 프로그램
     webdriver는 파이썬에서 브라우저를 시작할 수 있는 방법
 """
+
+# from extractors.indeed import extract_indeed_jobs
+from extractors.wwr import extract_wwr_jobs
+
+keyword = input("what do you want to search for?")
+
+# inddeed = extract_indeed_jobs(keyword)
+wwr = extract_wwr_jobs(keyword)
+
+# jobs = indded + wwr
+jobs = wwr
+
+for job in jobs:
+    print(job)
+    print("///////\n////////")
