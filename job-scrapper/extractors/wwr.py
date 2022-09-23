@@ -35,9 +35,9 @@ def extract_wwr_jobs(keyword):
               title = anchor.find('span', class_="title")            
               job_data = {
                 # 태그안에 있는 문자열 출력
-                'company' : company.string,
-                'location' : region.string,
-                'position' : title.string
+                'company' : company.string.replace(","," "),
+                'location' : region.string.replace(","," "),
+                'position' : title.string.replace(","," ")
               }
               # loop가 한번 돌아 job을 추출할때마다 그것들을 for loop의 밖에서 저장해낼것이다
               results.append(job_data)
