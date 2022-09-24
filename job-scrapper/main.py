@@ -13,42 +13,20 @@
     selenium은 브라우저를 자동화 할수있는 프로그램
     webdriver는 파이썬에서 브라우저를 시작할 수 있는 방법
 """
+from flask import Flask
 
-# from extractors.indeed import extract_indeed_jobs
-from extractors.wwr import extract_wwr_jobs
-
-keyword = input("what do you want to search for?")
-
-# inddeed = extract_indeed_jobs(keyword)
-wwr = extract_wwr_jobs(keyword)
-
-# jobs = indded + wwr
-jobs = wwr
-
-#built-in함수
-file = open(f"{keyword}.csv", "w")
-
-file.write("Position,Company,Location\n")
-
-for job in jobs:
-    file.write(f"{job['position'],{job['company']},{job['location']}}\n")
-
-file.close()
-
+app = Flask("jobScrapper")
 
 """
-  파일을 열고 내용을 쓰는것
-  
-  open함수 사용
-  열거나 만들려는 파일의 이름을 적는다
-  csv는 comma-separated-value 라는 뜻
-  맥, 윈도우, 엑셀, 구글문서 등 모두가 csv를 이해할수있다
-  ,를 찍고 파일을 열고싶은 모드를 지정해주어야한다.
-  예를들어 read-only현재는 "w"로 쓰기전용으로 구현
-
-  csv가 엑셀과 비슷하기때문에 액셀테이블이 가지고있는 열을 작성
-  ,로 구분할것이다 그래서 csv라고 함.
-
-  간혹데이터 자체에 , 가 넣어있는것들이있다. csv에서 , 는 엄청 중요하기때문에 가공이필요하다
-  그래서 기록전에 , 를 없애주어야함.
+  @가 있는 코드를 함수의 위에 위치
+  decorator라고도 함. syntactic sugar
+  decorator를 함수위에 두면 Flask는
+  user가 이 주소의 page를 방문했을 때
+  함수를 호출해야하는것을 알게된다
 """
+@app.route('/')
+def home():
+    return "hey there!"
+
+
+app.run("0.0.0.0")
