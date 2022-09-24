@@ -11,6 +11,11 @@
     HTML에 변수를 넣을 수 있다.
     user가 웹사이트를 보기전에 flask가 변수를 replace 할것이다
   -->
-  <h1>Hello to you ! My name is {{name}}</h1>
+  <h1>Job Scrapper</h1>
+  <h4>What job do you want?</h4>
+  <form action="/search">
+    <input type="text" name="keyword" placeholder="write keyword please" />
+    <button>Search</button>
+  </form>
 </body>
 </html>
