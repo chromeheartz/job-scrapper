@@ -1,19 +1,10 @@
 """
-    사용한 라이브러리
-    requsets
-    python코드에서 웹사이트로 request를 보낼수있게 해준다
-    get 은 function인데 이동한 다음에 website를 가져오는것
-
-    beautifulSoup
-    find_all같은 document에서 HTML태그를 찾게 해준다
-    html을 첫번째 argument로 전해주고 html.parser라는 문자열을 전달해줌
-    이것은 내가 beautifulSoup한테 html을 보내준다고 말하는것
-
-    selenium
-    selenium은 브라우저를 자동화 할수있는 프로그램
-    webdriver는 파이썬에서 브라우저를 시작할 수 있는 방법
+  request에 대한 정보를 접근 
+  request 는 브라우저가 웹사이트에가서 콘텐츠를 요청하는것을 말한다. 많은정보를 담고있음. 
+  요청하고있는 URL이 무엇인지, IP주소, Cookies를 담고있는지 등등
 """
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+from extractors.wwr import extract_wwr_jobs
 
 app = Flask("jobScrapper")
 """
@@ -33,7 +24,11 @@ def home():
 
 @app.route("/search")
 def hello():
-    return render_template("search.html")
+    print(request.args)
+    keyword = request.args.get("keyword")
+    wwr = extract_wwr_jobs(keyword)
+    jobs = wwr
+    return render_template("search.html", keyword=keyword, jobs=jobs)
 
 
 """
