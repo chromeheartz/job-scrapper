@@ -36,4 +36,9 @@ def hello():
     return render_template("search.html")
 
 
+"""
+  app.run을 호출하면 flask application을 만듬
+  네개의 0을 넣어주면 Replit이 웹서버를 만들려고하는것을 인식해서
+  브라우저창이랑 서버 console을 열어준다
+"""
 app.run("0.0.0.0")
