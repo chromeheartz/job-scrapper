@@ -7,6 +7,18 @@
   <title>Job Scrapper</title>
 </head>
 <body>
-  <h1>Search Results: "{{keyword}}"</h1>
+  <!--
+    {{}}와 {%%}의 차이
+    {{}}는 안에 변수를 넣으면 flask가 변수값을 반환해준다
+    {%%}는 실행시키고싶은 python코드를 넣는다
+  -->
+  {% for job in jobs %}
+    <div>
+      <span>{{job.company}}</span>
+      <span>{{job.location}}</span>
+      <span>{{job.position}}</span>
+      <a href="javascript:void(0);" target="_blank">링크작업용</a>
+    </div>
+  {% endfor %}
 </body>
 </html>
