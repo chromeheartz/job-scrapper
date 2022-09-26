@@ -3,8 +3,9 @@
   request 는 브라우저가 웹사이트에가서 콘텐츠를 요청하는것을 말한다. 많은정보를 담고있음. 
   요청하고있는 URL이 무엇인지, IP주소, Cookies를 담고있는지 등등
 """
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, send_file
 from extractors.wwr import extract_wwr_jobs
+from file import save_to_file
 
 app = Flask("jobScrapper")
 """
@@ -24,9 +25,11 @@ def home():
 db = {}
 
 @app.route("/search")
-def hello():
+def search():
     # print(request.args)
     keyword = request.args.get("keyword")
+    if keyword == None:
+        return redirect("/")
     if keyword in db:
       jobs = db[keyword]
     else:
@@ -34,6 +37,21 @@ def hello():
       jobs = wwr
       db[keyword] = jobs
     return render_template("search.html", keyword=keyword, jobs=jobs)
+
+@app.route("export")
+def export():
+    keyword = request.args.get("keyword")
+    if keyword == None:
+        return redirect("/")
+    if keyword not in db:
+        # keyword 저장위해 먼저 search로 보내기
+        return redirect(f"/search?keyword={keyword}")
+    save_to_file(keyword, db[keyword])
+    """
+      send_file은 첫번째 argument로 파일의 이름이 필요
+      다운로드가 되도록 as_attachment=True로 지정
+    """
+    return send_file(f"{keyword}.csv", as_attachment=True)
 
 
 """

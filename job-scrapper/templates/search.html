@@ -15,7 +15,10 @@
     {%%}는 실행시키고싶은 python코드를 넣는다
   -->
   <main class="container">
-    <h1>Search Results: "{{keyword}}"</h1>
+    <hgroup>
+      <h1>Search Results: "{{keyword}}"</h1>
+      <a href="/export?keyword={{keyword}}" target="_blank">Export file</a>
+    </hgroup>
     <figure>
       <table role='grid'>
         <thead>
