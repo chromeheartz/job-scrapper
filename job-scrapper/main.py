@@ -21,13 +21,18 @@ def home():
     # python은 백엔드다. bibi라는 데이터,문자열은 백엔드에서부터 전달되고있다.
     return render_template("home.html", name="bibi")
 
+db = {}
 
 @app.route("/search")
 def hello():
-    print(request.args)
+    # print(request.args)
     keyword = request.args.get("keyword")
-    wwr = extract_wwr_jobs(keyword)
-    jobs = wwr
+    if keyword in db:
+      jobs = db[keyword]
+    else:
+      wwr = extract_wwr_jobs(keyword)
+      jobs = wwr
+      db[keyword] = jobs
     return render_template("search.html", keyword=keyword, jobs=jobs)
 
 
